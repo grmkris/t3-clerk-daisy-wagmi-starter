@@ -5,6 +5,7 @@ import { ConnectWallet } from "../features/ConnectWallet";
 import { Clerk } from "../features/Clerk";
 import {Layout} from "../features/Layout";
 import {ToggleTheme} from "../features/ToggleTheme";
+import {SignIn} from "@clerk/nextjs";
 
 const Home: NextPage = () => {
 
@@ -23,6 +24,7 @@ const Home: NextPage = () => {
           </div>
           <ToggleTheme />
           <Clerk />
+          <SignIn />
           <ConnectWallet />
       </Layout>
     </>
