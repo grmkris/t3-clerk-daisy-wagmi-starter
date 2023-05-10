@@ -23,7 +23,7 @@ const NavigationItems = [
 
 export const Layout = (props: { children: ReactNode; }) => {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-primary-content">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-base-100">
       <NewLayout>
           {props.children}
       </NewLayout>
@@ -39,10 +39,10 @@ const NavigationBottom = () => {
         <Link href="/">
           <HomeIcon className={"h-5 w-5"} />{" "}
         </Link>
-        <Link href="/relays">
+        <Link href="/">
           <InboxStackIcon className={"h-5 w-5"} />
         </Link>
-        <Link href="/saved">
+        <Link href="/">
           <BookmarkSquareIcon className={"h-5 w-5"} />
         </Link>
         <label htmlFor="my-modal-6">
@@ -55,7 +55,7 @@ const NavigationBottom = () => {
       <div className="modal modal-bottom sm:modal-middle">
         <div className="modal-box">
           <button className={"btn-primary btn"}>
-            <Link href="/settings">Settings</Link>
+            <Link href="/">Settings</Link>
           </button>
           <div className="modal-action">
             <label htmlFor="my-modal-6" className="btn">
