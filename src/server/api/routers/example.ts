@@ -72,8 +72,10 @@ export const exampleRouter = createTRPCRouter({
       const discordUser = await oauth.getUser(disToken);
       console.log("discordUser", discordUser);
       const guilds = await oauth.getUserGuilds(disToken);
-      const guild = await oauth.getGuildMember(disToken, guilds[0].id);
-      console.log("guild", guild);
+      if (guilds[0]?.id) {
+        const guild = await oauth.getGuildMember(disToken, guilds[0]?.id);
+        console.log("guild", guild);
+      }
     }
     return ctx.prisma.example.findMany();
   }),
