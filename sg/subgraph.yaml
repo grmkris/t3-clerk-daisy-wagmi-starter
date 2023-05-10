@@ -1,0 +1,109 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: ApprovalManagerFacet
+    network: fuji
+    source:
+      address: "0xBD6AEDA6c3CE1ed9Be9451Cd3849fED4EFDb7c5F"
+      abi: ApprovalManagerFacet
+      startBlock: 21174580
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - ApprovalDeleted
+        - ApprovalSet
+        - ApprovalUsed
+      abis:
+        - name: ApprovalManagerFacet
+          file: ./abis/ApprovalManagerFacet.json
+      eventHandlers:
+        - event: ApprovalDeleted(indexed uint256,address,address,bytes4)
+          handler: handleApprovalDeleted
+        - event: ApprovalSet(indexed uint256,address,address,bytes4)
+          handler: handleApprovalSet
+        - event: ApprovalUsed(indexed uint256,address,address,bytes4)
+          handler: handleApprovalUsed
+      file: ./src/identity-diamond.ts
+
+  - kind: ethereum
+    name: RuleManagerFacet
+    network: fuji
+    source:
+      address: "0xBD6AEDA6c3CE1ed9Be9451Cd3849fED4EFDb7c5F"
+      abi: RuleManagerFacet
+      startBlock: 21174580
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - RuleAdded
+        - RuleAssigned
+        - RuleDeleted
+      abis:
+        - name: RuleManagerFacet
+          file: ./abis/RuleManagerFacet.json
+      eventHandlers:
+        - event: RuleAdded(indexed uint256,uint256)
+          handler: handleRuleAdded
+        - event: RuleAssigned(indexed uint256,indexed bytes32,uint256)
+          handler: handleRuleAssigned
+        - event: RuleDeleted(indexed uint256,uint256)
+          handler: handleRuleDeleted
+      file: ./src/identity-diamond.ts
+
+
+  - kind: ethereum
+    name: SmartWalletFactoryFacet
+    network: fuji
+    source:
+      address: "0xBD6AEDA6c3CE1ed9Be9451Cd3849fED4EFDb7c5F"
+      abi: SmartWalletFactoryFacet
+      startBlock: 21174580
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - SmartWalletDeployed
+        - SmartWalletDisabled
+        - SmartWalletEnabled
+      abis:
+        - name: SmartWalletFactoryFacet
+          file: ./abis/SmartWalletFactoryFacet.json
+      eventHandlers:
+        - event: SmartWalletDeployed(indexed uint256,address,address)
+          handler: handleSmartWalletDeployed
+        - event: SmartWalletDisabled(indexed uint256,address)
+          handler: handleSmartWalletDisabled
+        - event: SmartWalletEnabled(indexed uint256,address)
+          handler: handleSmartWalletEnabled
+      file: ./src/identity-diamond.ts
+
+
+templates:
+  - name: SmartWallet
+    kind: ethereum
+    network: fuji
+    source:
+      abi: SmartWallet
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - EtherReceived
+        - Initialized
+      abis:
+        - name: SmartWallet
+          file: ./abis/SmartWallet.json
+      eventHandlers:
+        - event: EtherReceived(indexed address,uint256)
+          handler: handleEtherReceived
+        - event: Initialized(uint8)
+          handler: handleInitialized
+      file: ./src/smart-wallet.ts

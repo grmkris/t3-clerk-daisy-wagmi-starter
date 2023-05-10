@@ -1,0 +1,174 @@
+type ApprovalDeleted @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  target: Bytes! # address
+  selector: Bytes! # bytes4
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ApprovalSet @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  target: Bytes! # address
+  selector: Bytes! # bytes4
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ApprovalUsed @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  target: Bytes! # address
+  selector: Bytes! # bytes4
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RuleAdded @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  ruleNum: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RuleAssigned @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  operation: Bytes! # uint256
+  ruleNum: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RuleDeleted @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  ruleNum: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SmartWalletDeployed @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  wallet: Bytes! # address
+  implementation: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SmartWalletDisabled @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  wallet: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SmartWalletEnabled @entity(immutable: true) {
+  id: Bytes!
+  mnft: BigInt! # uint256
+  wallet: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+type EtherReceived @entity(immutable: true) {
+  id: Bytes!
+  sender: Bytes! # address
+  value: BigInt! # uint256
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Initialized @entity(immutable: true) {
+  id: Bytes!
+  version: Int! # uint8
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type SmartWalletEntity @entity {
+  id: ID!
+  mnft: BigInt! # uint256
+  wallet: Bytes! # address
+  implementation: Bytes! # address
+  enabled: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  approvals: [Approval!]! @derivedFrom(field: "smartWallet")
+}
+
+type Operation @entity {
+  id: ID!
+  mnft: BigInt! # uint256
+  operationHash: String! #solidityKeccak...blallbla (OPERATION_NAME)
+  operationName: String!
+  rule: Rule!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type Rule @entity {
+  id: ID!
+  mnft: BigInt! # uint256
+  ruleNum: BigInt! # uint256
+  operations: [Operation!] @derivedFrom(field: "rule")
+  identities: [RuleIdentity!] @derivedFrom(field: "rule")
+  required: Int! # uint8
+  deleted: Boolean!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type RuleIdentity @entity {
+  id: ID!
+  rule: Rule!
+  identity: Identity!
+}
+
+type Identity @entity {
+  id: ID! # bytes32
+  rules: [RuleIdentity!] @derivedFrom(field: "identity")
+  verifier: Bytes! # address
+}
+
+type Approval @entity {
+  id: ID!
+  mnft: BigInt! # uint256
+  smartWallet: SmartWalletEntity!
+  tokenTarget: Bytes! # address
+  tokenSelector: Bytes! # bytes4
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  approvalUsedEntity: [ApprovalUsedEntity!] @derivedFrom(field: "approval")
+  deleted: Boolean!
+  target: Bytes # address
+  selector: Bytes # bytes4
+  initialData: Bytes # bytes
+  actualData: Bytes # bytes
+}
+
+type ApprovalUsedEntity @entity {
+  id: ID!
+  approval: Approval!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
